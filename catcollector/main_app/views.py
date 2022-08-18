@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .models import Cat
+from .models import Cat, CatToy
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -50,3 +50,33 @@ def profile(request, username):
     user = User.objects.get(username=username)
     cats = Cat.objects.filter(user=user)
     return render(request, 'profile.html', {'username': username, 'cats': cats})
+
+#######CatToy Views########
+class CatToyCreate(CreateView):
+    model = Cat
+    fields = '__all__'
+    success_url = '/cats'
+    template_name = 'cats/cat_form.html'
+
+    def form_valid(self, form):
+        #commit=false makes sure we don't save to the DB
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect('/cats') 
+
+class CatToyUpdate(UpdateView):
+    model = CatToy
+    fields = ['name', 'breed', 'description', 'age']
+    template_name = 'cats/cat_form.html'
+    
+    def form_valid(self, form):
+        #commit=false makes sure we don't save to the DB
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect('/cats/' + str(self.object.pk)) 
+
+class ToyDelete(DeleteView):
+    model = CatToy
+    success_url = '/cats'
+    template_name = 'cats/cat_confirm_delete.html'

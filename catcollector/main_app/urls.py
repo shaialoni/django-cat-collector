@@ -13,4 +13,9 @@ urlpatterns = [
     path('cats/<int:pk>/update/', views.CatUpdate.as_view(), name='cat_update'),
     path('cats/<int:pk>/delete/', views.CatDelete.as_view(), name='cat_delete'),
     path('user/<username>/', views.profile, name='profile'),
+    path('toys/<int:toy_id>/', views.CatToy_show, name='toys_show'),
+    path('toys/create/', views.CatToyCreate.as_view(), name='toy_create'),
+    path('toys/<int:pk>/update/', views.CatToyUpdate.as_view(), name='toy_update'),
+    path('toys/<int:pk>/delete/', views.CatToyDelete.as_view(), name='toy_delete'),
+
 ]
