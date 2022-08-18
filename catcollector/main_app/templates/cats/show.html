@@ -1,0 +1,11 @@
+{% extends 'base.html'%} 
+
+{% block content %}
+    
+    <p>Name: {{cat.name}}</p>
+    <p>Age: {{cat.age}}</p>
+
+    <a href="{% url 'cat_update' cat.id %}">Update Cat</a>
+    <a href="{% url 'cat_delete' cat.id %}">Delete Cat</a>
+
+    {% endblock %}
