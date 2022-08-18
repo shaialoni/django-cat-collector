@@ -53,30 +53,40 @@ def profile(request, username):
 
 #######CatToy Views########
 class CatToyCreate(CreateView):
-    model = Cat
+    model = CatToy
     fields = '__all__'
-    success_url = '/cats'
-    template_name = 'cats/cat_form.html'
+    success_url = '/cattoys'
+    template_name = 'cat_toys/cattoy_form.html'
 
     def form_valid(self, form):
         #commit=false makes sure we don't save to the DB
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        return HttpResponseRedirect('/cats') 
+        return HttpResponseRedirect('/cattoys') 
 
 class CatToyUpdate(UpdateView):
     model = CatToy
-    fields = ['name', 'breed', 'description', 'age']
-    template_name = 'cats/cat_form.html'
+    fields = ['name', 'color']
+    template_name = 'cat_toys/cattoy_form.html'
     
     def form_valid(self, form):
         #commit=false makes sure we don't save to the DB
         self.object = form.save(commit=False)
         self.object.save()
-        return HttpResponseRedirect('/cats/' + str(self.object.pk)) 
+        return HttpResponseRedirect('/cattoys/' + str(self.object.pk)) 
 
-class ToyDelete(DeleteView):
+class CatToyDelete(DeleteView):
     model = CatToy
-    success_url = '/cats'
-    template_name = 'cats/cat_confirm_delete.html'
+    success_url = '/cattoys'
+    template_name = 'cat_toys/cattoy_confirm_delete.html'
+
+# Add these CatToy View functions
+
+def cattoys_index(request):
+    cattoys = CatToy.objects.all()
+    return render(request, 'cat_toys/index.html', { 'cattoys': cattoys })
+
+def cattoys_detail(request, cattoy_id):
+    cattoy = CatToy.objects.get(id=cattoy_id)
+    return render(request, 'cat_toys/detail.html', { 'cattoy': cattoy })
