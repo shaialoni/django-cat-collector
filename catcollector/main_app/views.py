@@ -87,6 +87,6 @@ def cattoys_index(request):
     cattoys = CatToy.objects.all()
     return render(request, 'cat_toys/index.html', { 'cattoys': cattoys })
 
-def cattoys_detail(request, cattoy_id):
+def cattoys_show(request, cattoy_id):
     cattoy = CatToy.objects.get(id=cattoy_id)
-    return render(request, 'cat_toys/detail.html', { 'cattoy': cattoy })
+    return render(request, 'cat_toys/show.html', { 'cattoy': cattoy })
